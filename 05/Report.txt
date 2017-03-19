@@ -1,0 +1,127 @@
+1. Integer overflow is when an integer reaches a number so large that it can no
+longer store the number in the amount of space allocated to a single integer, so
+when it hits Integer.MAX_VALUE + 1, "overflows", returns back to the
+Integer.MIN_VALUE and continues from there.
+
+2. We can detect integer overflow easily in Java by using Java's Math.addExact
+method which throws an exception when you attempt to add two values together
+that integer overflow. This however is expensive so instead we just ensure that
+the midpoint formula will not overflow by ensuring that we are only doing
+calculations that can not possibly overflow or underflow.
+
+3. Instead of detecting when it has happened, we wrote code that ensured that an
+overflow or underflow could not happen. When we have two negative numbers, we
+add them together with one being absolute so then we don't overflow. Otherwise,
+when we have our low greater than 0 we use a takeaway formula. Finally, if our
+low is less than zero but our high is positive, we simply add the values
+together as we can't possibly under or overflow.
+
+4. As stated above we ensured that an overflow or underflow cannot possibly
+happen depending on whether the low and high from x and y were positive or
+negative.
+
+5. Harder than it should have been. Then harder again. It would be nice if Java
+was more like Python and didn't have a MAX_VALUE for Integers.
+
+6. If you have no idea about the sorts of input that you are getting then you
+are better off using a "safe" language like Python. If you are pretty certain
+that you won't ever risk overflowing an integer and can put a check in it, then
+"unsafe" languages like Java would be fine.
+
+7. They aren't zero as the float data type in computers can't accurately
+represent mathematical real numbers or even all of the mathematical rational
+numbers. They have a degree of precision. Under the hood, rounding is performed
+and causes simple equations like 0.1 + 0.2 to fail to accurately add up, instead
+of equaling 0.3.
+
+0 0.0
+1 0.0
+2 0.0
+3 0.0
+4 0.0
+5 0.0
+6 0.0
+7 0.0
+8 0.0
+9 0.0
+10 0.0
+11 0.0
+12 0.0
+13 0.0
+14 0.0
+15 1.0737418E-7
+16 0.0
+17 0.0
+18 0.0
+19 Infinity
+
+8. Each time we divide and aren't able to accurately represent the number we are
+losing even more precision. As this continues the more we go and the more
+rounding that happens, we get progressively worse and worse. Also, because we
+are getting the square root of numbers that are possibly fewer than 1 e actually
+goes higher and closer to 1.
+
+Three errors occur: - Underflow: As we continue to divide and the number gets
+smaller and smaller, we eventually underflow what can be stored in a float. -
+Subnormal Numbers: As the number of times we underflow the number gets worse, we
+lose even more precision and the impact that another underflow has is greater
+than the last time we underflowed. - Rounding Errors: As already mentioned
+floats can't represent real and all rational numbers. As such we get rounding
+errors which compound as the number is divided more.
+
+0 0.0
+1 0.0
+2 0.0
+3 0.0
+4 0.0
+5 7.275958E-8
+6 9.094948E-8
+7 1.1368685E-7
+8 1.4210856E-7
+9 0.0
+10 1.1102232E-7
+11 1.3877789E-7
+12 8.673618E-8
+13 1.0842023E-7
+14 6.776264E-8
+15 8.47033E-8
+16 1.0587913E-7
+17 6.617446E-8
+18 8.271807E-8
+19 1.0339758E-7
+20 1.2924697E-7
+21 1.138989E-5
+22 0.0011383832
+23 0.058791216
+24 1.0
+
+9. We are now getting less wrong answers. Hypot exists because it makes sure that we aren't square rooting numbers that are less than 1.
+
+0 0.0
+1 0.0
+2 7.4505806E-8
+3 0.0
+4 1.1641533E-7
+5 7.275958E-8
+6 9.094948E-8
+7 1.1368685E-7
+8 1.4210856E-7
+9 8.881785E-8
+10 1.1102232E-7
+11 1.3877789E-7
+12 8.673618E-8
+13 1.0842023E-7
+14 6.776264E-8
+15 8.47033E-8
+16 1.0587913E-7
+17 1.3234892E-7
+18 1.6543613E-7
+19 1.0339758E-7
+20 6.4623485E-8
+21 8.077936E-8
+22 1.009742E-7
+23 1.2621774E-7
+24 7.888609E-8
+
+10. The heron_area fails by overflowing back to the minimum value of float. So
+when any number added after overflow has happened that value will be incorrect.
